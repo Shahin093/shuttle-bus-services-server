@@ -27,12 +27,6 @@ exports.getBusBooking = async (req, res, next) => {
 exports.createBusBooking = async (req, res, next) => {
     try {
         // Save Or Create
-
-        // Save 
-        // const product = new Product(req.body);
-        // console.log('data:::', req.body);
-        // const result = await product.save();
-
         //Create
         const result = await createBusBookingService(req.body);
 

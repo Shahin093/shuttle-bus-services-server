@@ -2,12 +2,8 @@
 const { default: mongoose } = require("mongoose");
 
 
-const busBookingSchema = mongoose.Schema({
+const busesSchema = mongoose.Schema({
 
-    bus_name: {
-        type: String,
-        required: true
-    },
 
     static_district: {
         type: String,
@@ -23,31 +19,31 @@ const busBookingSchema = mongoose.Schema({
         }
     },
     district_from: {
-        type: Array,
+        type: String,
         required: true,
-        // enum: {
-        //     values: [
-        // "Dhaka",
-        // "Cumilla",
-        // "Feni",
-        // "Chittagong"
-        //     ],
-        //     message: "District_From can not be {VALUE}, must be available"
-        // }
+        enum: {
+            values: [
+                "Dhaka",
+                "Cumilla",
+                "Feni",
+                "Chittagong"
+            ],
+            message: "District_From can not be {VALUE}, must be available"
+        }
     },
 
     district_to: {
-        type: Array,
+        type: String,
         required: true,
-        // enum: {
-        //     values: [
-        //         "Dhaka",
-        //         "Cumilla",
-        //         "Feni",
-        //         "Chittagong"
-        //     ],
-        //     message: "to can not be {VALUE}, must be available"
-        // }
+        enum: {
+            values: [
+                "Dhaka",
+                "Cumilla",
+                "Feni",
+                "Chittagong"
+            ],
+            message: "to can not be {VALUE}, must be available"
+        }
     },
     seat: {
         type: Number,
@@ -63,27 +59,26 @@ const busBookingSchema = mongoose.Schema({
         required: true
     },
     slot: {
-        type: Array,
+        type: String,
         required: true,
-        // enum: {
-        //     values: [
-        // "9:00 AM",
-        //     "10:00 AM",
-        //     "11:00 AM",
-        //     "12:00 PM",
-        //     "1:00 PM",
-        //     "2:00 PM",
-        //     "3:00 PM",
-        //     "4:00 PM",
-        //     "5:00 PM",
-        //     "6:00 PM",
-        //     "7:00 PM",
-        //     "8:00 PM",
-        //     "9:00 PM",
-        //     "10:00 PM"],
+        enum: {
+            values: ["9:00 AM",
+                "10:00 AM",
+                "11:00 AM",
+                "12:00 PM",
+                "1:00 PM",
+                "2:00 PM",
+                "3:00 PM",
+                "4:00 PM",
+                "5:00 PM",
+                "6:00 PM",
+                "7:00 PM",
+                "8:00 PM",
+                "9:00 PM",
+                "10:00 PM"],
 
-        //     message: "slot value can not be {VALUE}, must be available"
-        // }
+            message: "slot value can not be {VALUE}, must be available"
+        }
     },
     img: {
         type: String,
@@ -110,6 +105,18 @@ const busBookingSchema = mongoose.Schema({
             message: "to can not be {VALUE}, must be available"
         }
     },
+    CreateAt: {
+        type: Date,
+        default: Date.now
+    },
+    UpdatedAt: {
+        type: Date,
+        default: Date.now
+    },
+    // img: {
+    //     type: String,
+    //     required: true,
+    // }
 
 }, {
     timestamps: true,
@@ -118,5 +125,5 @@ const busBookingSchema = mongoose.Schema({
 // SCHEMA ---> MODEL  --> QUERY
 
 // Creating Model 
-const BusBooking = mongoose.model('BusBooking', busBookingSchema)
-module.exports = BusBooking;
+const Buses = mongoose.model('Buses', busesSchema)
+module.exports = Buses;
