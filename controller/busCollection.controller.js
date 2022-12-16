@@ -1,4 +1,4 @@
-const { createBusCollectionService, getBusCollectionServiceEmail, getBusCollectionServiceSloting } = require("../services/busCollection.service");
+const { createBusCollectionService, getBusCollectionServiceEmail, getBusCollectionServiceSloting, updateBusCollectionById, deleteBusCollectionByIdService } = require("../services/busCollection.service");
 
 
 exports.getBusCollection = async (req, res, next) => {
@@ -38,7 +38,7 @@ exports.getBySignleSlot = async (req, res, next) => {
         const bus = req.query.bus_name;
         const dates = req.query.dates;
         // const real = dates.slice(0, 10);
-        console.log(slot, from, to, bus, dates);
+        // console.log(slot, from, to, bus, dates);
         // const dates = req.query.dates;
         // console.log(slot, bus);
         // var datetime = new Date();
@@ -83,4 +83,55 @@ exports.createBusCollection = async (req, res, next) => {
         });
         next(error);
     }
+};
+
+
+// bus collection updated 
+exports.busCollectionUpdatedById = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        // console.log(id);
+        const result = await updateBusCollectionById(id, req.body);
+        res.status(200).json({
+            status: 'Success',
+            message: 'Successfully Updated',
+            updateData: result
+
+        })
+
+    } catch (err) {
+        res.status(400).json({
+            status: 'Fail',
+            message: 'Could not updated the Bus Booking',
+            error: err.message
+        })
+    }
+};
+
+// bus collection deleted 
+exports.busCollectonDeletedById = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        console.log(id);
+        const result = await deleteBusCollectionByIdService(id);
+        console.log(result);
+        if (!result.deletedCount) {
+            return res.status(400).json({
+                status: 'Fail',
+                message: 'Could not the Bus Collection'
+            });
+        }
+        res.status(200).json({
+            status: 'Success',
+            message: 'Successfully Deleted the Bus Collection'
+        });
+
+    } catch (error) {
+        res.status(401).json({
+            status: 'Fail',
+            message: 'Could not Deleting the Bus',
+            error: error.message
+        });
+    }
 }
+

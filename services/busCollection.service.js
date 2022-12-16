@@ -18,9 +18,24 @@ exports.getBusCollectionServiceSloting = async (slot, from, to, bus, dates) => {
     return busCollection;
 };
 
-
+// bus collection create data 
 exports.createBusCollectionService = async (data) => {
     const busColletionService = await BusCollection.create(data);
     return busColletionService;
 };
+
+// bus collection updated data 
+exports.updateBusCollectionById = async (busCollectionId, data) => {
+    console.log(busCollectionId);
+    var busCollection = await BusCollection.findById(busCollectionId);
+    const result = await busCollection.set(data).save();
+    return result;
+};
+
+
+// bus colleciton deleted data by id
+exports.deleteBusCollectionByIdService = async (busCollectionId) => {
+    const deletedBusCollection = await BusCollection.deleteOne({ _id: busCollectionId });
+    return deletedBusCollection;
+}
 

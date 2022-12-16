@@ -1,4 +1,4 @@
-const { createBusesService, gettingBusesService } = require("../services/buses.service");
+const { createBusesService, gettingBusesService, updateBusByIdService } = require("../services/buses.service");
 
 
 // creating an buses 
@@ -61,6 +61,7 @@ exports.updateBusById = async (req, res, next) => {
 exports.deleteBusById = async (req, res, next) => {
     try {
         const { id } = req.params;
+        console.log(id);
         const result = await deleteBusByService(id);
         if (!result.deletedCount) {
             return res.status(400).json({

@@ -3,11 +3,19 @@ const busCollection = require('../controller/busCollection.controller');
 
 const router = express.Router();
 
+// main route 
 router.route('/')
     .get(busCollection.getBusCollection)
-    .post(busCollection.createBusCollection)
+    .post(busCollection.createBusCollection);
+
+// sloting filters route 
 router.route('/slots')
     .get(busCollection.getBySignleSlot);
+
+// update and delete route 
+router.route('/:id')
+    .patch(busCollection.busCollectionUpdatedById)
+    .delete(busCollection.busCollectonDeletedById);
 
 
 
