@@ -14,6 +14,7 @@ router.route('/slots')
 
 // update and delete route 
 router.route('/:id')
+    .get(busCollection.busCollectionGetById)
     .patch(busCollection.busCollectionUpdatedById)
     .delete(busCollection.busCollectonDeletedById);
 

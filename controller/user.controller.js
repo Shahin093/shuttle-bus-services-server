@@ -1,6 +1,6 @@
 const { signupService, findByEmail } = require("../services/user.service");
 const { generateToken } = require("../utilis/token");
-
+const jwt = require('jsonwebtoken');
 
 // user sign up 
 exports.signup = async (req, res, next) => {
@@ -9,6 +9,31 @@ exports.signup = async (req, res, next) => {
         res.status(200).json({
             status: 'Success',
             message: 'Successfully sign up '
+        });
+    } catch (error) {
+        res.status(400).json({
+            status: 'Fail',
+            error: error.message
+        });
+    }
+}
+
+// user Checked 
+exports.userChecked = async (req, res, next) => {
+    try {
+        const email = req.params.email;
+        const filter = { email: email };
+        const user = req.body;
+        const options = { upsert: true };
+        const updateDoc = {
+            $set: user,
+        };
+        const result = await User.updateOne(filter, updateDoc, options);
+        const token = jwt.sign({ email: email }, process.env.TOKEN_SECREC, { expiresIn: '1h' });
+        res.send({ result, token });
+        res.status(200).json({
+            status: 'Success',
+            message: 'already log in  '
         });
     } catch (error) {
         res.status(400).json({

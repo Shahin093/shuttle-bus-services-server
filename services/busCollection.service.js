@@ -39,3 +39,9 @@ exports.deleteBusCollectionByIdService = async (busCollectionId) => {
     return deletedBusCollection;
 }
 
+// bus colleciton get data by id
+exports.getBusCollectionByIdService = async (busCollectionId) => {
+    const deletedBusCollection = await BusCollection.findById({ _id: busCollectionId });
+    return deletedBusCollection;
+}
+

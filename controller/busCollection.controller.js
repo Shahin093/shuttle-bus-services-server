@@ -1,4 +1,4 @@
-const { createBusCollectionService, getBusCollectionServiceEmail, getBusCollectionServiceSloting, updateBusCollectionById, deleteBusCollectionByIdService } = require("../services/busCollection.service");
+const { createBusCollectionService, getBusCollectionServiceEmail, getBusCollectionServiceSloting, updateBusCollectionById, deleteBusCollectionByIdService, getBusCollectionByIdService } = require("../services/busCollection.service");
 
 
 exports.getBusCollection = async (req, res, next) => {
@@ -91,7 +91,7 @@ exports.busCollectionUpdatedById = async (req, res, next) => {
     try {
         const { id } = req.params;
         // console.log(id);
-        const result = await updateBusCollectionById(id, req.body);
+        const result = await getBusCollectionById(id);
         res.status(200).json({
             status: 'Success',
             message: 'Successfully Updated',
@@ -103,6 +103,26 @@ exports.busCollectionUpdatedById = async (req, res, next) => {
         res.status(400).json({
             status: 'Fail',
             message: 'Could not updated the Bus Booking',
+            error: err.message
+        })
+    }
+};
+// get by id 
+exports.busCollectionGetById = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        // console.log(id);
+        const result = await getBusCollectionByIdService(id, req.body);
+        res.status(200).json({
+            status: 'Success',
+            message: 'Successfully Updated',
+            data: result
+        });
+
+    } catch (err) {
+        res.status(400).json({
+            status: 'Fail',
+            message: 'Could not get Data the Bus Booking',
             error: err.message
         })
     }

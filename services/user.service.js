@@ -8,3 +8,4 @@ exports.signupService = async (userInfo) => {
 exports.findByEmail = async (email) => {
     return await User.findOne({ email });
 };
+
