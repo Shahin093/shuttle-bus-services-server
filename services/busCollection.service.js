@@ -32,6 +32,13 @@ exports.updateBusCollectionById = async (busCollectionId, data) => {
     return result;
 };
 
+exports.updatedBusCollectionByIdService = async (busCollectionId, data) => {
+    // console.log(busCollectionId);
+    var busCollection = await BusCollection.findById(busCollectionId);
+    const result = await busCollection.set(data).save();
+    return result;
+};
+
 
 // bus colleciton deleted data by id
 exports.deleteBusCollectionByIdService = async (busCollectionId) => {
@@ -45,3 +52,10 @@ exports.getBusCollectionByIdService = async (busCollectionId) => {
     return deletedBusCollection;
 }
 
+// all bus
+exports.getAllBusCollectionService = async () => {
+    // http://localhost:5000/api/v1/busCollection/slots?bus_name=CDM&&slot=10:00AM
+
+    const busCollection = await BusCollection.find({});
+    return busCollection;
+};

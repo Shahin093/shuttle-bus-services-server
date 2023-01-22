@@ -9,3 +9,7 @@ exports.findByEmail = async (email) => {
     return await User.findOne({ email });
 };
 
+exports.findByUserEmail = async (email) => {
+    return await User.findOne({ email });
+}
+

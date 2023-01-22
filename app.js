@@ -3,25 +3,25 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const BusBooking = require('./model/busBooking');
-const stripe = require("stripe");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 
 
 // verify jwt 
-function verifyJWT(req, res, next) {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-        return res.status(401).send({ message: `UnAuthorized access` });
-    }
-    const token = authHeader.split(' ')[1];
-    jwt.verify(token, process.env.TOKEN_SECREC, function (err, decoded) {
-        if (err) {
-            return res.status(403).send({ message: 'Forbidden access' })
-        }
-        req.decoded = decoded;
-        next();
-    });
-}
+// function verifyJWT(req, res, next) {
+//     const authHeader = req.headers.authorization;
+//     if (!authHeader) {
+//         return res.status(401).send({ message: `UnAuthorized access` });
+//     }
+//     const token = authHeader.split(' ')[1];
+//     jwt.verify(token, process.env.TOKEN_SECREC, function (err, decoded) {
+//         if (err) {
+//             return res.status(403).send({ message: 'Forbidden access' })
+//         }
+//         req.decoded = decoded;
+//         next();
+//     });
+// }
 
 
 
@@ -35,19 +35,6 @@ function verifyJWT(req, res, next) {
 //     }
 // }
 
-// payment getwaye
-app.post('/api/v1/create-payment-intent', async (req, res) => {
-    const service = req.body;
-    const price = service?.price;
-    const amount = price * 100;
-
-    const paymentIntent = await stripe?.paymentIntents?.save({
-        amount: amount,
-        currency: "usd",
-        payment_method_types: ['card']
-    });
-    res.send({ clientSecret: paymentIntent?.client_secret })
-});
 
 // app.get('/service', async (req, res) => {
 //     const query = {};
@@ -65,18 +52,18 @@ app.post('/api/v1/create-payment-intent', async (req, res) => {
 
 
 
-app.put('/user/:email', async (req, res) => {
-    const email = req.params.email;
-    const filter = { email: email };
-    const user = req.body;
-    const options = { upsert: true };
-    const updateDoc = {
-        $set: user,
-    };
-    const result = await User.updateOne(filter, updateDoc, options);
-    const token = jwt.sign({ email: email }, process.env.TOKEN_SECREC, { expiresIn: '1h' });
-    res.send({ result, token });
-});
+// app.put('/user/:email', async (req, res) => {
+//     const email = req.params.email;
+//     const filter = { email: email };
+//     const user = req.body;
+//     const options = { upsert: true };
+//     const updateDoc = {
+//         $set: user,
+//     };
+//     const result = await User.updateOne(filter, updateDoc, options);
+//     const token = jwt.sign({ email: email }, process.env.TOKEN_SECREC, { expiresIn: '1h' });
+//     res.send({ result, token });
+// });
 
 
 
@@ -123,6 +110,7 @@ const userRouter = require('./routes/user.route');
 const busCollection = require('./routes/busCollection.route');
 const buses = require('./routes/buses.route');
 const User = require('./model/user');
+const payRouter = require('./routes/pay.route');
 // const port = 3000
 
 // middleware
@@ -148,6 +136,23 @@ app.use('/api/v1/busCollection', busCollection)
 // user create 
 app.use('/api/v1/user', userRouter);
 
+
+// payment getwaye 
+app.use('api/v1/create-payment-intent', payRouter)
+// payment getwaye
+app.post('/api/v1/create-payment-intent', async (req, res, next) => {
+    const service = req.body;
+    // console.log('service', service)
+    const price = service?.price;
+    const amount = price * 100;
+
+    const paymentIntent = await stripe?.paymentIntents?.create({
+        amount: amount,
+        currency: "usd",
+        payment_method_types: ['card']
+    });
+    // res.send({ clientSecret: paymentIntent?.client_secret })
+});
 
 
 module.exports = app;

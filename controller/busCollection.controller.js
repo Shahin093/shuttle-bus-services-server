@@ -1,4 +1,4 @@
-const { createBusCollectionService, getBusCollectionServiceEmail, getBusCollectionServiceSloting, updateBusCollectionById, deleteBusCollectionByIdService, getBusCollectionByIdService } = require("../services/busCollection.service");
+const { createBusCollectionService, getBusCollectionServiceEmail, getBusCollectionServiceSloting, updateBusCollectionById, deleteBusCollectionByIdService, getBusCollectionByIdService, getAllBusCollectionService, updatedBusCollectionByIdService } = require("../services/busCollection.service");
 
 
 exports.getBusCollection = async (req, res, next) => {
@@ -91,7 +91,7 @@ exports.busCollectionUpdatedById = async (req, res, next) => {
     try {
         const { id } = req.params;
         // console.log(id);
-        const result = await getBusCollectionById(id);
+        const result = await updatedBusCollectionByIdService(id, req.body);
         res.status(200).json({
             status: 'Success',
             message: 'Successfully Updated',
@@ -150,6 +150,30 @@ exports.busCollectonDeletedById = async (req, res, next) => {
         res.status(401).json({
             status: 'Fail',
             message: 'Could not Deleting the Bus',
+            error: error.message
+        });
+    }
+}
+
+
+// all bus collection today
+exports.allBusCollectionToday = async (req, res, next) => {
+    try {
+
+
+        const result = await getAllBusCollectionService();
+
+
+        res.status(200).json({
+            status: 'Success',
+            message: 'Successfully all the Bus Collection',
+            data: result
+        });
+
+    } catch (error) {
+        res.status(401).json({
+            status: 'Fail',
+            message: 'Could not all the Bus collection.',
             error: error.message
         });
     }

@@ -62,13 +62,19 @@ const busCollectionSchema = mongoose.Schema({
             message: "slot value can not be {VALUE}, must be available"
         }
     },
+    booked: {
+        type: Array,
+        default: [],
+    },
+    totalSeat: {
+        type: Number
+    },
     seat: {
         type: Number,
-        required: true
     },
     amount: {
         type: Number,
-        required: true
+
     },
     status: {
         type: String,
@@ -80,6 +86,9 @@ const busCollectionSchema = mongoose.Schema({
         default: 2
     },
     counter_phone_number: {
+        type: String
+    },
+    passenger_phone_number: {
         type: String
     },
     dates: {
@@ -97,7 +106,7 @@ const busCollectionSchema = mongoose.Schema({
     },
     img: {
         type: String,
-       
+
     }
 
 }, {

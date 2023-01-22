@@ -1,6 +1,7 @@
-const { signupService, findByEmail } = require("../services/user.service");
+const { signupService, findByEmail, findByUserEmail } = require("../services/user.service");
 const { generateToken } = require("../utilis/token");
 const jwt = require('jsonwebtoken');
+// const User = require("../model/User");
 
 // user sign up 
 exports.signup = async (req, res, next) => {
@@ -123,7 +124,9 @@ exports.login = async (req, res, next) => {
 exports.getMe = async (req, res, next) => {
     try {
         // res.json(req.user);
-        const user = await findByEmail(req.user?.email);
+        const { email } = req.params;
+        // console.log(email);
+        const user = await findByEmail(email);
 
         res.status(200).json({
             status: 'successfully',
@@ -136,3 +139,22 @@ exports.getMe = async (req, res, next) => {
         });
     };
 };
+
+exports.gettingUserAdmin = async (req, res, next) => {
+    try {
+        const email = req.params.email;
+        console.log(email);
+        const user = await findByUserEmail(email);
+        console.log(user.role);
+        res.status(2000).json({
+            status: 'Successfully user',
+            data: user.role
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: 'fail',
+            error
+        })
+    }
+
+}
